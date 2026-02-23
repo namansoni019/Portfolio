@@ -1,0 +1,129 @@
+/* ============ SCROLL ANIMATIONS ============ */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animate-on-scroll:nth-child(2) {
+    transition-delay: 0.1s;
+}
+
+.animate-on-scroll:nth-child(3) {
+    transition-delay: 0.2s;
+}
+
+.animate-on-scroll:nth-child(4) {
+    transition-delay: 0.3s;
+}
+
+.animate-on-scroll:nth-child(5) {
+    transition-delay: 0.4s;
+}
+
+.animate-on-scroll:nth-child(6) {
+    transition-delay: 0.5s;
+}
+
+/* ============ KEYFRAMES ============ */
+
+/* Square node pulse */
+@keyframes squarePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0;
+    }
+}
+
+/* Status dot pulse */
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 8px currentColor;
+    }
+
+    50% {
+        opacity: 0.4;
+        box-shadow: 0 0 16px currentColor;
+    }
+}
+
+/* Ring rotation */
+@keyframes ringRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Horizontal data packet flowing left to right along connector */
+@keyframes packetFlow {
+    0% {
+        left: -4px;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        left: calc(100% - 4px);
+        opacity: 0;
+    }
+}
+
+/* Vertical data packet flowing top to bottom (mobile) */
+@keyframes packetFlowVertical {
+    0% {
+        top: -4px;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        top: calc(100% - 4px);
+        opacity: 0;
+    }
+}
+
+/* Mini packet in project pipelines */
+@keyframes miniPacket {
+    0% {
+        left: 0;
+        opacity: 0.8;
+    }
+
+    100% {
+        left: calc(100% - 6px);
+        opacity: 0.2;
+    }
+}
