@@ -18,27 +18,39 @@
 
 <body>
 
-    <!-- ============ WELCOME LOADER ============ -->
-    <div id="welcome-loader" class="welcome-loader">
-        <div class="welcome-loader__content">
-            <div class="welcome-loader__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="12" cy="12" r="3" />
-                    <path
-                        d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+    <!-- ============ ADVANCED AI LOADER ============ -->
+    <div id="advanced-loader" class="advanced-loader">
+        <!-- Background Grid/Noise -->
+        <div class="loader-bg"></div>
+
+        <!-- Terminal Logs -->
+        <div class="loader-terminal" id="loader-terminal"></div>
+
+        <!-- 3D Core Visualization -->
+        <div class="loader-core">
+            <div class="loader-core__ring loader-core__ring--1"></div>
+            <div class="loader-core__ring loader-core__ring--2"></div>
+            <div class="loader-core__ring loader-core__ring--3"></div>
+            <div class="loader-core__center">
+                <svg viewBox="0 0 100 100" class="loader-svg">
+                    <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" class="poly-1"></polygon>
+                    <polygon points="50,22 75,37 75,63 50,78 25,63 25,37" fill="none" class="poly-2"></polygon>
+                    <circle cx="50" cy="50" r="12" fill="none" class="poly-3"></circle>
+                    <circle cx="50" cy="50" r="4" fill="currentColor"></circle>
                 </svg>
             </div>
-            <div class="welcome-loader__text-wrapper">
-                <h1 class="welcome-loader__text">Welcome to <span class="welcome-loader__accent">Naman Soni's</span>
-                    Portfolio</h1>
-            </div>
-            <div class="welcome-loader__progress-bar">
-                <div class="welcome-loader__progress-fill"></div>
-            </div>
-            <div class="welcome-loader__status">
-                <span class="status-dot status-dot--green"></span>
-                <span>INITIALIZING AI AGENT...</span>
-            </div>
+        </div>
+
+        <!-- Text & Progress -->
+        <div class="loader-branding">
+            <div class="loader-title" id="loader-title" data-text="WELCOME TO">WELCOME TO</div>
+            <div class="loader-title-highlight" id="loader-title-highlight" data-text="NAMAN SONI'S PORTFOLIO">NAMAN
+                SONI'S PORTFOLIO</div>
+        </div>
+
+        <div class="loader-progress-container">
+            <div class="loader-progress-bar" id="loader-progress-bar"></div>
+            <div class="loader-progress-glow" id="loader-progress-glow"></div>
         </div>
     </div>
 

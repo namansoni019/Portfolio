@@ -3,7 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    initWelcomeLoader();
+    initAdvancedLoader();
     initBackgroundCanvas();
     initWorkflow();
     initScrollObserver();
@@ -12,22 +12,100 @@ document.addEventListener('DOMContentLoaded', () => {
     initNotebook();
 });
 
-/* ============ WELCOME LOADER ============ */
-function initWelcomeLoader() {
-    const loader = document.getElementById('welcome-loader');
+/* ============ ADVANCED AI LOADER ============ */
+function initAdvancedLoader() {
+    const loader = document.getElementById('advanced-loader');
     if (!loader) return;
 
-    // Hide loader after animations finish (approx 2.8s)
-    setTimeout(() => {
-        loader.classList.add('hidden');
+    // Terminal Log Sequence
+    const terminal = document.getElementById('loader-terminal');
+    const logs = [
+        '[BOOT] Neural engine initializing...',
+        '[CORE] Loading cognitive models...',
+        '[DATA] Syncing spatial matrices...',
+        '[AI] Evaluating user access parameters...',
+        '[AUTH] Request accepted. Decrypting profile...',
+        '[SYSTEM] All systems nominal. Rendering interface.'
+    ];
 
-        // Remove from DOM after transition completes to free up resources
-        setTimeout(() => {
-            if (loader.parentNode) {
-                loader.parentNode.removeChild(loader);
-            }
-        }, 800);
-    }, 2800);
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+        if (logIndex < logs.length) {
+            const span = document.createElement('span');
+            span.textContent = `> ${logs[logIndex]}`;
+            if (terminal) terminal.appendChild(span);
+            logIndex++;
+        } else {
+            clearInterval(logInterval);
+        }
+    }, 450);
+
+    // Hacker Text Effect for Titles
+    function decryptText(element, speed) {
+        if (!element) return;
+        const targetText = element.getAttribute('data-text');
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+        let iteration = 0;
+        const interval = setInterval(() => {
+            element.textContent = targetText
+                .split('')
+                .map((letter, index) => {
+                    if (index < iteration) return targetText[index];
+                    if (targetText[index] === ' ') return ' ';
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join('');
+            if (iteration >= targetText.length) clearInterval(interval);
+            iteration += speed;
+        }, 30);
+    }
+
+    decryptText(document.getElementById('loader-title'), 1 / 3);
+    setTimeout(() => {
+        decryptText(document.getElementById('loader-title-highlight'), 1 / 3);
+    }, 400);
+
+    // Progress Bar Animation
+    const progressBar = document.getElementById('loader-progress-bar');
+    const progressGlow = document.getElementById('loader-progress-glow');
+    let progress = 0;
+    const duration = 2800; // 2.8 seconds timeline
+    const startTime = performance.now();
+
+    function updateProgress(currentTime) {
+        const elapsed = currentTime - startTime;
+        progress = Math.min((elapsed / duration) * 100, 100);
+
+        // Non-linear progress (starts fast, slows down, then pop to 100)
+        let visualProgress = progress;
+        if (progress < 40) visualProgress = progress * 1.5;
+        else if (progress < 80) visualProgress = 60 + (progress - 40) * 0.5;
+        else if (progress < 95) visualProgress = 80 + (progress - 80) * 1.3;
+        else visualProgress = 100;
+
+        visualProgress = Math.min(visualProgress, 100);
+        if (progressBar) progressBar.style.width = `${visualProgress}%`;
+        if (progressGlow) progressGlow.style.left = `${visualProgress}%`;
+
+        if (progress < 100) {
+            requestAnimationFrame(updateProgress);
+        } else {
+            // End sequence
+            setTimeout(() => {
+                loader.classList.add('flash'); // triggers the big bang core expansion
+
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+
+                    setTimeout(() => {
+                        if (loader.parentNode) loader.parentNode.removeChild(loader);
+                    }, 800);
+                }, 600); // Wait for flash to cover screen
+            }, 300);
+        }
+    }
+
+    requestAnimationFrame(updateProgress);
 }
 
 /* ============ BACKGROUND CANVAS — OPTIMIZED ============ */
