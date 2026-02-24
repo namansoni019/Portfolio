@@ -539,18 +539,58 @@ function initNotebook() {
         }, 850);
     }
 
-    // Click zones
-    clickRight.addEventListener('click', flipForward);
-    clickLeft.addEventListener('click', flipBackward);
+    // Stop propagation on links inside pages so clicking "Live" or "GitHub" doesn't flip the page
+    pages.forEach(page => {
+        const links = page.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+    });
 
-    // Dot navigation
+    // Helper to check if a click actually hit a link underneath the click zone
+    function handleZoneClick(e, flipFunction) {
+        // Temporarily hide click zones to see what's underneath
+        clickLeft.style.display = 'none';
+        clickRight.style.display = 'none';
+
+        const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+
+        // Restore click zones
+        clickLeft.style.display = '';
+        clickRight.style.display = '';
+
+        // If the click was actually on a link (or inside one), click the link instead
+        const link = elementBelow ? elementBelow.closest('a') : null;
+        if (link) {
+            if (link.target === '_blank') {
+                window.open(link.href, '_blank');
+            } else {
+                window.location.href = link.href;
+            }
+            return; // Don't flip page
+        }
+
+        // Otherwise, flip the page
+        resetAutoPlay();
+        flipFunction();
+    }
+
+    // Click zones (manual override)
+    if (clickRight) clickRight.addEventListener('click', (e) => handleZoneClick(e, flipForward));
+    if (clickLeft) clickLeft.addEventListener('click', (e) => handleZoneClick(e, flipBackward));
+
+    // Dot navigation (manual override)
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
             const target = parseInt(dot.dataset.goto);
             if (target === current || animating) return;
 
+            // Optional: reset timer on manual click
+            resetAutoPlay();
+
             if (target > current) {
-                // Flip forward multiple pages quickly
                 const steps = target - current;
                 let i = 0;
                 const interval = setInterval(() => {
@@ -570,7 +610,38 @@ function initNotebook() {
         });
     });
 
+    // --- AUTO-PLAY FEATURE ---
+    let autoPlayTimer;
+
+    function startAutoPlay() {
+        autoPlayTimer = setInterval(() => {
+            if (!animating) {
+                // If we reach the end, flipForward() already has logic to reset to first page
+                flipForward();
+            }
+        }, 3000); // 3 seconds per page
+    }
+
+    function stopAutoPlay() {
+        clearInterval(autoPlayTimer);
+    }
+
+    function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    // Pause on hover so user can read / click links
+    const notebookContainer = document.querySelector('.notebook');
+    if (notebookContainer) {
+        notebookContainer.addEventListener('mouseenter', stopAutoPlay);
+        notebookContainer.addEventListener('mouseleave', startAutoPlay);
+    }
+
     // Initialize
     initPages();
     updateUI();
+
+    // Start the automatic slide show
+    startAutoPlay();
 }
