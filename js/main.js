@@ -3,6 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initWelcomeLoader();
     initBackgroundCanvas();
     initWorkflow();
     initScrollObserver();
@@ -10,6 +11,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initNotebook();
 });
+
+/* ============ WELCOME LOADER ============ */
+function initWelcomeLoader() {
+    const loader = document.getElementById('welcome-loader');
+    if (!loader) return;
+
+    // Hide loader after animations finish (approx 2.8s)
+    setTimeout(() => {
+        loader.classList.add('hidden');
+
+        // Remove from DOM after transition completes to free up resources
+        setTimeout(() => {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
+            }
+        }, 800);
+    }, 2800);
+}
 
 /* ============ BACKGROUND CANVAS — OPTIMIZED ============ */
 function initBackgroundCanvas() {
