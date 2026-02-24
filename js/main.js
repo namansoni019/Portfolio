@@ -59,12 +59,12 @@ function initNavbar() {
 }
 
 /* ============ THEME SWITCHER ============ */
-window.globalCanvasRGB = '0, 136, 255'; // Default blue
+window.globalCanvasRGB = '157, 0, 255'; // Default purple
 function initThemeSwitcher() {
     const btns = document.querySelectorAll('.theme-btn');
     const root = document.documentElement;
 
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'blue';
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'purple';
     applyTheme(savedTheme);
 
     btns.forEach(btn => {
@@ -75,7 +75,7 @@ function initThemeSwitcher() {
     });
 
     function applyTheme(theme) {
-        if (theme === 'blue') root.removeAttribute('data-theme');
+        if (theme === 'purple') root.removeAttribute('data-theme');
         else root.setAttribute('data-theme', theme);
 
         btns.forEach(b => b.classList.remove('active'));
@@ -84,9 +84,9 @@ function initThemeSwitcher() {
 
         localStorage.setItem('portfolio-theme', theme);
 
-        if (theme === 'purple') window.globalCanvasRGB = '157, 0, 255';
+        if (theme === 'blue') window.globalCanvasRGB = '0, 136, 255';
         else if (theme === 'emerald') window.globalCanvasRGB = '0, 255, 136';
-        else window.globalCanvasRGB = '0, 136, 255';
+        else window.globalCanvasRGB = '157, 0, 255';
 
         // Trigger resize to rebuild canvas grid with new colors
         window.dispatchEvent(new Event('resize'));
@@ -480,14 +480,14 @@ function initWorkflow() {
 
             const bg = document.createElementNS(NS, 'path');
             bg.setAttribute('d', d);
-            bg.setAttribute('stroke', conn.style === 'dashed' ? 'rgba(0,136,255,0.04)' : 'rgba(0,136,255,0.06)');
+            bg.setAttribute('stroke', conn.style === 'dashed' ? `rgba(${window.globalCanvasRGB}, 0.04)` : `rgba(${window.globalCanvasRGB}, 0.06)`);
             bg.setAttribute('stroke-width', '4'); bg.setAttribute('fill', 'none');
             if (conn.style === 'dashed') bg.setAttribute('stroke-dasharray', '6 6');
             svg.appendChild(bg);
 
             const mp = document.createElementNS(NS, 'path');
             mp.setAttribute('d', d); mp.setAttribute('id', `cp-${idx}`);
-            mp.setAttribute('stroke', conn.style === 'dashed' ? 'rgba(0,170,255,0.2)' : 'rgba(0,136,255,0.3)');
+            mp.setAttribute('stroke', conn.style === 'dashed' ? `rgba(${window.globalCanvasRGB}, 0.2)` : `rgba(${window.globalCanvasRGB}, 0.3)`);
             mp.setAttribute('stroke-width', '2'); mp.setAttribute('fill', 'none');
             mp.setAttribute('filter', 'url(#glow)');
             if (conn.style === 'dashed') mp.setAttribute('stroke-dasharray', '8 6');
@@ -500,7 +500,7 @@ function initWorkflow() {
                 const dm = document.createElementNS(NS, 'rect');
                 dm.setAttribute('x', mx - 5); dm.setAttribute('y', my - 5);
                 dm.setAttribute('width', '10'); dm.setAttribute('height', '10');
-                dm.setAttribute('rx', '2'); dm.setAttribute('fill', 'rgba(0,136,255,0.8)');
+                dm.setAttribute('rx', '2'); dm.setAttribute('fill', `rgba(${window.globalCanvasRGB}, 0.8)`);
                 dm.setAttribute('filter', 'url(#glow)');
                 dm.setAttribute('transform', `rotate(45 ${mx} ${my})`);
                 svg.appendChild(dm);
@@ -508,7 +508,7 @@ function initWorkflow() {
 
             const pk = document.createElementNS(NS, 'circle');
             pk.setAttribute('r', '4');
-            pk.setAttribute('fill', conn.style === 'dashed' ? '#00aaff' : '#0088ff');
+            pk.setAttribute('fill', `rgb(${window.globalCanvasRGB})`);
             pk.setAttribute('filter', 'url(#glow)');
             const am = document.createElementNS(NS, 'animateMotion');
             am.setAttribute('dur', conn.style === 'dashed' ? '3.5s' : '2.5s');
