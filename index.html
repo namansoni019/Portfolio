@@ -18,6 +18,51 @@
 
 <body>
 
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar">
+        <div class="navbar__container">
+            <div class="navbar__brand">
+                <span class="status-dot status-dot--green"></span>
+                <span>NAMAN SONI</span>
+            </div>
+
+            <div class="navbar__links">
+                <a href="#about" class="navbar__link">About</a>
+                <a href="#skills" class="navbar__link">Skills</a>
+                <a href="#projects" class="navbar__link">Projects</a>
+                <a href="#experience" class="navbar__link">Experience</a>
+                <a href="#contact" class="navbar__link">Contact</a>
+            </div>
+
+            <div class="navbar__actions">
+                <!-- Theme Switcher moved to Navbar -->
+                <div class="theme-switcher">
+                    <button class="theme-btn active" data-set="blue" title="Dark Blue"></button>
+                    <button class="theme-btn" data-set="purple" title="Black + Purple"></button>
+                    <button class="theme-btn" data-set="emerald" title="Charcoal + Emerald"></button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="navbar__toggle" aria-label="Toggle Menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div class="navbar__mobile-menu">
+            <a href="#about" class="navbar__mobile-link">About</a>
+            <a href="#skills" class="navbar__mobile-link">Skills</a>
+            <a href="#projects" class="navbar__mobile-link">Projects</a>
+            <a href="#experience" class="navbar__mobile-link">Experience</a>
+            <a href="#contact" class="navbar__mobile-link">Contact</a>
+        </div>
+    </nav>
+
     <!-- ============ ADVANCED AI LOADER ============ -->
     <div id="advanced-loader" class="advanced-loader">
         <!-- Background Grid/Noise -->

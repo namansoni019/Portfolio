@@ -3,6 +3,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initNavbar();
+    initThemeSwitcher();
     initAdvancedLoader();
     initBackgroundCanvas();
     initWorkflow();
@@ -11,6 +13,85 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initNotebook();
 });
+
+/* ============ NAVBAR ============ */
+function initNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const toggle = document.querySelector('.navbar__toggle');
+    const mobileMenuLinks = document.querySelectorAll('.navbar__mobile-link');
+    let lastScroll = 0;
+
+    if (!navbar) return;
+
+    // Handle scroll hide/show
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+
+        if (currentScroll <= 0) {
+            navbar.classList.remove('hidden');
+            return;
+        }
+
+        if (currentScroll > lastScroll && !navbar.classList.contains('menu-open')) {
+            // Scroll down & menu closed -> hide
+            navbar.classList.add('hidden');
+        } else {
+            // Scroll up -> show
+            navbar.classList.remove('hidden');
+        }
+
+        lastScroll = currentScroll;
+    });
+
+    // Handle mobile toggle
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            navbar.classList.toggle('menu-open');
+        });
+    }
+
+    // Close mobile menu when a link is clicked
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navbar.classList.remove('menu-open');
+        });
+    });
+}
+
+/* ============ THEME SWITCHER ============ */
+window.globalCanvasRGB = '0, 136, 255'; // Default blue
+function initThemeSwitcher() {
+    const btns = document.querySelectorAll('.theme-btn');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'blue';
+    applyTheme(savedTheme);
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.getAttribute('data-set');
+            applyTheme(theme);
+        });
+    });
+
+    function applyTheme(theme) {
+        if (theme === 'blue') root.removeAttribute('data-theme');
+        else root.setAttribute('data-theme', theme);
+
+        btns.forEach(b => b.classList.remove('active'));
+        const activeBtn = document.querySelector(`.theme-btn[data-set="${theme}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        localStorage.setItem('portfolio-theme', theme);
+
+        if (theme === 'purple') window.globalCanvasRGB = '157, 0, 255';
+        else if (theme === 'emerald') window.globalCanvasRGB = '0, 255, 136';
+        else window.globalCanvasRGB = '0, 136, 255';
+
+        // Trigger resize to rebuild canvas grid with new colors
+        window.dispatchEvent(new Event('resize'));
+    }
+}
 
 /* ============ ADVANCED AI LOADER ============ */
 function initAdvancedLoader() {
@@ -136,7 +217,7 @@ function initBackgroundCanvas() {
         gridCanvas.height = canvas.height;
         const gctx = gridCanvas.getContext('2d');
         const spacing = 40;
-        gctx.fillStyle = 'rgba(0, 136, 255, 0.045)';
+        gctx.fillStyle = `rgba(${window.globalCanvasRGB}, 0.045)`;
         for (let x = spacing; x < gridCanvas.width; x += spacing) {
             for (let y = spacing; y < gridCanvas.height; y += spacing) {
                 gctx.fillRect(x, y, 1.5, 1.5); // fillRect is faster than arc
@@ -179,7 +260,7 @@ function initBackgroundCanvas() {
             ctx.fillStyle = 'rgba(10, 14, 26, 0.6)';
             roundRect(ctx, this.x - half, this.y - half, this.size, this.size, this.borderRadius);
             ctx.fill();
-            ctx.strokeStyle = `rgba(0, 136, 255, ${this.currentOpacity})`;
+            ctx.strokeStyle = `rgba(${window.globalCanvasRGB}, ${this.currentOpacity})`;
             ctx.lineWidth = 1.2;
             roundRect(ctx, this.x - half, this.y - half, this.size, this.size, this.borderRadius);
             ctx.stroke();
@@ -190,8 +271,8 @@ function initBackgroundCanvas() {
             const op = this.currentOpacity * 0.6;
             ctx.save();
             ctx.translate(this.x, this.y);
-            ctx.strokeStyle = `rgba(0, 136, 255, ${op})`;
-            ctx.fillStyle = `rgba(0, 136, 255, ${op})`;
+            ctx.strokeStyle = `rgba(${window.globalCanvasRGB}, ${op})`;
+            ctx.fillStyle = `rgba(${window.globalCanvasRGB}, ${op})`;
             ctx.lineWidth = 1;
             switch (this.iconType) {
                 case 0:
@@ -235,7 +316,7 @@ function initBackgroundCanvas() {
     function drawConnection(a, b, opacity) {
         const ax = a.x, ay = a.y, bx = b.x, by = b.y;
         const midX = (ax + bx) / 2;
-        ctx.strokeStyle = `rgba(0, 136, 255, ${opacity})`;
+        ctx.strokeStyle = `rgba(${window.globalCanvasRGB}, ${opacity})`;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
@@ -252,7 +333,7 @@ function initBackgroundCanvas() {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(Math.PI / 4);
-        ctx.fillStyle = `rgba(0, 136, 255, ${Math.min(opacity, 0.5)})`;
+        ctx.fillStyle = `rgba(${window.globalCanvasRGB}, ${Math.min(opacity, 0.5)})`;
         ctx.fillRect(-3, -3, 6, 6);
         ctx.restore();
     }
@@ -285,7 +366,7 @@ function initBackgroundCanvas() {
                 x = midX + (bx - midX) * ((this.progress - r2) / (1 - r2)); y = by;
             }
             const fade = Math.min(this.progress * 6, 1) * Math.min((1 - this.progress) * 6, 1);
-            ctx.fillStyle = `rgba(0, 136, 255, ${fade * 0.7})`;
+            ctx.fillStyle = `rgba(${window.globalCanvasRGB}, ${fade * 0.7})`;
             ctx.fillRect(x - 2, y - 2, 4, 4); // rect faster than arc
         }
     }
